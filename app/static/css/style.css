@@ -110,3 +110,55 @@ button:hover {
   margin: 40px auto;
   padding: 0 16px;
 }
+
+.landing {
+  max-width: 560px;
+  padding: 32px;
+  text-align: center;
+}
+
+.landing h1 {
+  margin: 0 0 16px;
+  font-size: 2.5rem;
+}
+
+.landing .tagline {
+  margin: 0 0 32px;
+  color: #94a3b8;
+  font-size: 1.1rem;
+  line-height: 1.5;
+}
+
+.landing-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+.btn {
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 1rem;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: #6366f1;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #4f46e5;
+}
+
+.btn-secondary {
+  background: #334155;
+  color: #e2e8f0;
+}
+
+.btn-secondary:hover {
+  background: #475569;
+}

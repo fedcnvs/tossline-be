@@ -10,6 +10,11 @@ templates = Jinja2Templates(directory="app/templates")
 
 
 @router.get("/")
+def index_page(request: Request, user: User | None = Depends(get_optional_user)):
+    return templates.TemplateResponse("index.html", {"request": request, "user": user})
+
+
+@router.get("/login")
 def login_page(request: Request, user: User | None = Depends(get_optional_user)):
     if user:
         return RedirectResponse(url="/player")
@@ -19,5 +24,5 @@ def login_page(request: Request, user: User | None = Depends(get_optional_user))
 @router.get("/player")
 def player_page(request: Request, user: User | None = Depends(get_optional_user)):
     if not user:
-        return RedirectResponse(url="/")
+        return RedirectResponse(url="/login")
     return templates.TemplateResponse("player.html", {"request": request, "user": user})

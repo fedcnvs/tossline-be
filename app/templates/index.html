@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tossline</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+  <main class="landing">
+    <h1>Tossline</h1>
+    <p class="tagline">
+      Volleyball rally analysis, without the spreadsheet. Tag it, watch it,
+      understand it — all in one place.
+    </p>
+
+    <div class="landing-actions">
+      {% if user %}
+      <a class="btn btn-primary" href="/player">Go to player</a>
+      {% else %}
+      <a class="btn btn-primary" href="/login">Login</a>
+      {% endif %}
+      <a class="btn btn-secondary" href="/docs">API guide</a>
+      <a class="btn btn-secondary" href="/health">Health status</a>
+    </div>
+  </main>
+</body>
+</html>

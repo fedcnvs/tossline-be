@@ -37,10 +37,13 @@ Controlled by `EMAIL_BACKEND` in `.env`:
 
 ## Pages
 
-- `/` — login page (email → PIN).
+- `/` — landing page, links to login, API docs, and health status.
+- `/login` — login page (email → PIN).
 - `/player` — protected page with an HTML5 video player
   (`app/static/video/sample.mp4` is a generated placeholder clip — replace it
   with real content).
+- `/docs` — Swagger UI (built into FastAPI).
+- `/health` — `{"status": "ok"}`.
 
 ## Data
 
