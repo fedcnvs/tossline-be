@@ -97,11 +97,16 @@ holds old test accounts, delete them or they remain able to sign in.
 
 ### User levels
 
-`users.level` defaults to `"user"`. Whoever logs in with the email matching
-`ADMIN_EMAIL` (defaults to federico.cian@gmail.com) is automatically
-promoted to `"admin"` on their next `request-pin` call — no manual DB edit
-needed. To promote someone else, either change `ADMIN_EMAIL` or update their
-row directly (`UPDATE users SET level='admin' WHERE id=...`).
+`users.level` defaults to `"user"`. Admins are `ADMIN_EMAIL` (defaults to
+federico.cian@gmail.com) plus everyone in `ADMIN_EMAILS` in `app/seed.py`.
+They're promoted on startup and again on their next `request-pin`, so adding
+an address to that set is enough — it reaches rows that already exist on a
+deployed database, not just fresh inserts.
+
+Promotion is one-way: the seed never demotes, so
+`UPDATE users SET level='admin' ...` by hand also survives a redeploy. To
+*remove* an admin you must both drop them from `ADMIN_EMAILS` and set their
+row back to `'user'`.
 
 Existing databases (e.g. the one on a Railway volume) get the `level` column
 added automatically on startup via `patch_schema()` in `app/database.py` —

@@ -9,7 +9,7 @@ from app.deps import get_current_user
 from app.email_service import send_pin_email
 from app.models import LoginPin, User, utcnow
 from app.schemas import RequestPinIn, UserOut, VerifyPinIn
-from app.seed import find_user
+from app.seed import admin_emails, find_user
 from app.security import COOKIE_NAME, create_access_token, generate_pin, hash_pin, verify_pin
 
 router = APIRouter(prefix="/auth", tags=["auth"])
@@ -26,7 +26,7 @@ def request_pin(payload: RequestPinIn, db: Session = Depends(get_db)):
             detail="This email isn't on the invite list.",
         )
 
-    if user.email.lower() == settings.admin_email.lower() and user.level != "admin":
+    if user.email.lower() in admin_emails() and user.level != "admin":
         user.level = "admin"
         db.commit()
 

@@ -4,10 +4,10 @@ Tossline is closed: `POST /auth/request-pin` only issues a code to an email
 that already has a row in `users`. This module makes sure the roster below
 exists on every startup.
 
-It is additive and idempotent — it inserts missing people and never updates
-or deletes existing rows, so promoting someone to admin by hand in the DB
-survives a redeploy. Adding someone later does NOT require editing this
-file; inserting a row in `users` is enough.
+It is additive and idempotent: it inserts missing people, promotes anyone
+listed in ADMIN_EMAILS who isn't an admin yet, and never demotes or deletes.
+So a promotion you make by hand in the DB survives a redeploy. Adding someone
+later does NOT require editing this file; inserting a row in `users` is enough.
 """
 
 import logging
@@ -43,6 +43,17 @@ ROSTER: list[tuple[str | None, str]] = [
     (None, "conivafer23@gmail.com"),
 ]
 
+# Anyone here gets level="admin" — i.e. read access to every user's email
+# and login-code history on /admin/db. `settings.admin_email` is always
+# included on top of this.
+ADMIN_EMAILS = {
+    "conivafer23@gmail.com",
+}
+
+
+def admin_emails() -> set[str]:
+    return {e.strip().lower() for e in ADMIN_EMAILS | {settings.admin_email} if e.strip()}
+
 
 def find_user(db: Session, email: str) -> User | None:
     """Look a user up case-insensitively — several roster addresses were
@@ -53,22 +64,28 @@ def find_user(db: Session, email: str) -> User | None:
 def seed_roster() -> None:
     db = SessionLocal()
     try:
+        admins = admin_emails()
         # The admin must always be able to get in, even on a fresh database,
         # or nobody can reach /admin/db to fix anything.
-        entries = ROSTER + [(None, settings.admin_email)]
+        entries = ROSTER + [(None, email) for email in sorted(admins)]
         added = 0
+        promoted = 0
 
         for name, email in entries:
             email = email.strip().lower()
-            if find_user(db, email):
-                continue
+            existing = find_user(db, email)
 
-            level = "admin" if email == settings.admin_email.strip().lower() else "user"
-            db.add(User(email=email, name=name, level=level))
-            added += 1
+            if existing is None:
+                db.add(User(email=email, name=name, level="admin" if email in admins else "user"))
+                added += 1
+            elif email in admins and existing.level != "admin":
+                # Covers roster members already inserted as plain users on a
+                # deployed DB — changing the list above alone wouldn't reach them.
+                existing.level = "admin"
+                promoted += 1
 
-        if added:
+        if added or promoted:
             db.commit()
-            logger.info("Seeded %s roster user(s)", added)
+            logger.info("Seed: %s user(s) added, %s promoted to admin", added, promoted)
     finally:
         db.close()
