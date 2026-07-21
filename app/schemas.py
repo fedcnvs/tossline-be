@@ -23,4 +23,4 @@ class UserOut(BaseModel):
 
 class VideoOpenIn(BaseModel):
     video_name: str = Field(min_length=1, max_length=500)
-    source: Literal["desktop", "browser", "ipad", "iphone"] = "browser"
+    source: Literal["browser", "ipad", "iphone"] = "browser"

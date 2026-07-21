@@ -38,7 +38,7 @@ already have a row in `users` or it gets a 403 ("not on the invite list").
 the backend database. The current user is attached when a valid session cookie
 is present; otherwise the event is stored as anonymous. The latest 500 events
 are visible to administrators on `/admin/db`. The `source` value identifies the
-playback platform: `desktop`, `browser`, `ipad`, or `iphone`.
+web playback platform: `browser`, `ipad`, or `iphone`.
 
 ### Email backend
 
