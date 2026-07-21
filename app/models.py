@@ -17,6 +17,7 @@ class User(Base):
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     email: Mapped[str] = mapped_column(String, unique=True, index=True, nullable=False)
+    level: Mapped[str] = mapped_column(String, nullable=False, default="user", server_default="user")
     created_at: Mapped[datetime] = mapped_column(DateTime, default=utcnow)
 
     login_pins: Mapped[list["LoginPin"]] = relationship(back_populates="user", cascade="all, delete-orphan")

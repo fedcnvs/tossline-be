@@ -13,13 +13,14 @@
     <h2>Users ({{ users|length }})</h2>
     <table class="admin-table">
       <thead>
-        <tr><th>ID</th><th>Email</th><th>Created at</th></tr>
+        <tr><th>ID</th><th>Email</th><th>Level</th><th>Created at</th></tr>
       </thead>
       <tbody>
         {% for u in users %}
         <tr>
           <td>{{ u.id }}</td>
           <td>{{ u.email }}</td>
+          <td>{{ u.level }}</td>
           <td>{{ u.created_at }}</td>
         </tr>
         {% endfor %}

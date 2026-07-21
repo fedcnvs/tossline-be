@@ -3,12 +3,13 @@ import logging
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
-from app.database import Base, engine
+from app.database import Base, engine, patch_schema
 from app.routers import admin, auth, pages
 
 logging.basicConfig(level=logging.INFO)
 
 Base.metadata.create_all(bind=engine)
+patch_schema()
 
 app = FastAPI(title="Tossline BE")
 

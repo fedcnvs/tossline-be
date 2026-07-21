@@ -13,5 +13,6 @@ class VerifyPinIn(BaseModel):
 class UserOut(BaseModel):
     id: int
     email: EmailStr
+    level: str
 
     model_config = {"from_attributes": True}

@@ -48,12 +48,25 @@ Controlled by `EMAIL_BACKEND` in `.env` (code default: `resend`):
 - `/docs` — Swagger UI (built into FastAPI).
 - `/health` — `{"status": "ok"}`.
 - `/admin/db` — read-only table dump of `users` and `login_pins`. Requires
-  being logged in (via `/login`, the normal email-PIN flow) as `ADMIN_EMAIL`
-  (defaults to federico.cian@gmail.com); anyone else gets a 403.
+  being logged in (via `/login`) with a `users.level` of `admin`; anyone else
+  gets a 403.
 
 ## Data
 
 SQLite file (`tossline.db`, gitignored) with two tables: `users`, `login_pins`.
+
+### User levels
+
+`users.level` defaults to `"user"`. Whoever logs in with the email matching
+`ADMIN_EMAIL` (defaults to federico.cian@gmail.com) is automatically
+promoted to `"admin"` on their next `request-pin` call — no manual DB edit
+needed. To promote someone else, either change `ADMIN_EMAIL` or update their
+row directly (`UPDATE users SET level='admin' WHERE id=...`).
+
+Existing databases (e.g. the one on a Railway volume) get the `level` column
+added automatically on startup via `patch_schema()` in `app/database.py` —
+`Base.metadata.create_all` only creates missing tables, not columns on
+tables that already exist.
 
 ## Deploying to Railway
 

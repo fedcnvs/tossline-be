@@ -23,6 +23,10 @@ def request_pin(payload: RequestPinIn, db: Session = Depends(get_db)):
         db.commit()
         db.refresh(user)
 
+    if user.email.lower() == settings.admin_email.lower() and user.level != "admin":
+        user.level = "admin"
+        db.commit()
+
     pin = generate_pin()
     login_pin = LoginPin(
         user_id=user.id,
