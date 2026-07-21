@@ -22,6 +22,7 @@ class User(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime, default=utcnow)
 
     login_pins: Mapped[list["LoginPin"]] = relationship(back_populates="user", cascade="all, delete-orphan")
+    video_opens: Mapped[list["VideoOpen"]] = relationship(back_populates="user")
 
 
 class LoginPin(Base):
@@ -35,3 +36,15 @@ class LoginPin(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime, default=utcnow)
 
     user: Mapped["User"] = relationship(back_populates="login_pins")
+
+
+class VideoOpen(Base):
+    __tablename__ = "video_opens"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    user_id: Mapped[int | None] = mapped_column(ForeignKey("users.id"), nullable=True, index=True)
+    video_name: Mapped[str] = mapped_column(String(500), nullable=False, index=True)
+    source: Mapped[str] = mapped_column(String(32), nullable=False, default="cloudflare")
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=utcnow, index=True)
+
+    user: Mapped["User | None"] = relationship(back_populates="video_opens")

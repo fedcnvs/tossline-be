@@ -41,6 +41,32 @@
   </div>
 
   <div class="table-head rise rise-3">
+    <h2>Video opens</h2>
+    <span class="count">Last {{ video_opens|length }}</span>
+  </div>
+
+  <div class="table-wrap rise rise-3">
+    <table>
+      <thead>
+        <tr><th>ID</th><th>User</th><th>Video</th><th>Source</th><th>Opened at</th></tr>
+      </thead>
+      <tbody>
+        {% for event in video_opens %}
+        <tr>
+          <td class="num">{{ event.id }}</td>
+          <td>{{ event.user.email if event.user else 'anonymous' }}</td>
+          <td>{{ event.video_name }}</td>
+          <td><span class="badge">{{ event.source }}</span></td>
+          <td class="num">{{ event.created_at.strftime('%Y-%m-%d %H:%M:%S') if event.created_at else '—' }}</td>
+        </tr>
+        {% else %}
+        <tr><td class="empty" colspan="5">No videos opened yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="table-head rise rise-3">
     <h2>Login PINs</h2>
     <span class="count">Last {{ login_pins|length }}</span>
   </div>
@@ -54,7 +80,7 @@
         {% for p in login_pins %}
         <tr>
           <td class="num">{{ p.id }}</td>
-          <td class="num">{{ p.user_id }}</td>
+          <td>{{ p.user.email if p.user else '—' }}</td>
           <td class="{{ 'flag-yes' if p.consumed else 'flag-no' }}">
             {{ 'yes' if p.consumed else 'no' }}
           </td>

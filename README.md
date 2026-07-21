@@ -32,6 +32,13 @@ already have a row in `users` or it gets a 403 ("not on the invite list").
 3. `GET /auth/me` — current user (requires cookie).
 4. `POST /auth/logout` — clears the cookie.
 
+## Usage events
+
+`POST /events/video-open {video_name, source}` records a video selection in
+the backend database. The current user is attached when a valid session cookie
+is present; otherwise the event is stored as anonymous. The latest 500 events
+are visible to administrators on `/admin/db`.
+
 ### Email backend
 
 Controlled by `EMAIL_BACKEND` in `.env` (code default: `resend`):

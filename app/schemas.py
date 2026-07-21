@@ -1,4 +1,6 @@
-from pydantic import BaseModel, EmailStr
+from typing import Literal
+
+from pydantic import BaseModel, EmailStr, Field
 
 
 class RequestPinIn(BaseModel):
@@ -17,3 +19,8 @@ class UserOut(BaseModel):
     level: str
 
     model_config = {"from_attributes": True}
+
+
+class VideoOpenIn(BaseModel):
+    video_name: str = Field(min_length=1, max_length=500)
+    source: Literal["cloudflare", "desktop"] = "cloudflare"
