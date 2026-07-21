@@ -12,7 +12,7 @@ class Settings(BaseSettings):
 
     pin_expire_minutes: int = 10
 
-    email_backend: str = "console"  # "console" or "resend"
+    email_backend: str = "resend"  # "console" or "resend"
     resend_api_key: str = ""
     email_from: str = "login@tossline.example"
 

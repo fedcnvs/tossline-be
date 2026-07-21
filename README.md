@@ -30,10 +30,12 @@ Visit http://127.0.0.1:8000
 
 ### Email backend
 
-Controlled by `EMAIL_BACKEND` in `.env`:
-- `console` (default) — PIN is logged to the server console, nothing is sent.
-- `resend` — sends via [Resend](https://resend.com); set `RESEND_API_KEY` and
-  `EMAIL_FROM`.
+Controlled by `EMAIL_BACKEND` in `.env` (code default: `resend`):
+- `resend` (default) — sends via [Resend](https://resend.com); requires
+  `RESEND_API_KEY` and an `EMAIL_FROM` on a domain verified in Resend.
+- `console` — PIN is only logged to the server console, nothing is sent.
+  `.env.example` sets this for local dev so you don't need a real Resend key
+  to test the login flow.
 
 ## Pages
 
@@ -66,8 +68,9 @@ expects (Nixpacks auto-detects Python from `requirements.txt`).
      since Railway serves over HTTPS)
    - `JWT_SECRET` — a real random secret, e.g. `openssl rand -hex 32`.
      Don't ship the default from `.env.example`.
-   - `EMAIL_BACKEND=resend`, `RESEND_API_KEY`, `EMAIL_FROM` once Resend is
-     wired up (leave as `console` and check `railway logs` in the meantime).
+   - `RESEND_API_KEY` and `EMAIL_FROM` (an address on a domain verified in
+     Resend) — `EMAIL_BACKEND` already defaults to `resend` in code, so PINs
+     will actually send once these are set.
    - `PIN_EXPIRE_MINUTES`, `JWT_EXPIRE_MINUTES` if you want non-default
      values.
    - `ADMIN_EMAIL` if it should differ from the default
