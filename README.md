@@ -32,7 +32,8 @@ Visit http://127.0.0.1:8000
 
 Controlled by `EMAIL_BACKEND` in `.env` (code default: `resend`):
 - `resend` (default) — sends via [Resend](https://resend.com); requires
-  `RESEND_API_KEY` and an `EMAIL_FROM` on a domain verified in Resend.
+  `RESEND_API_KEY`. `EMAIL_FROM` defaults to `login@evervolley.com`
+  (evervolley.com is verified in Resend).
 - `console` — PIN is only logged to the server console, nothing is sent.
   `.env.example` sets this for local dev so you don't need a real Resend key
   to test the login flow.
@@ -68,9 +69,9 @@ expects (Nixpacks auto-detects Python from `requirements.txt`).
      since Railway serves over HTTPS)
    - `JWT_SECRET` — a real random secret, e.g. `openssl rand -hex 32`.
      Don't ship the default from `.env.example`.
-   - `RESEND_API_KEY` and `EMAIL_FROM` (an address on a domain verified in
-     Resend) — `EMAIL_BACKEND` already defaults to `resend` in code, so PINs
-     will actually send once these are set.
+   - `RESEND_API_KEY` — `EMAIL_BACKEND` and `EMAIL_FROM` already default to
+     `resend` / `login@evervolley.com` in code, so PINs will actually send
+     once the key is set.
    - `PIN_EXPIRE_MINUTES`, `JWT_EXPIRE_MINUTES` if you want non-default
      values.
    - `ADMIN_EMAIL` if it should differ from the default

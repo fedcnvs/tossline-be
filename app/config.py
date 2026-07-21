@@ -14,7 +14,7 @@ class Settings(BaseSettings):
 
     email_backend: str = "resend"  # "console" or "resend"
     resend_api_key: str = ""
-    email_from: str = "login@tossline.example"
+    email_from: str = "login@evervolley.com"
 
     admin_email: str = "federico.cian@gmail.com"
 
