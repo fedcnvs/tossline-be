@@ -9,6 +9,7 @@ from app.deps import get_current_user
 from app.email_service import send_pin_email
 from app.models import LoginPin, User, utcnow
 from app.schemas import RequestPinIn, UserOut, VerifyPinIn
+from app.seed import find_user
 from app.security import COOKIE_NAME, create_access_token, generate_pin, hash_pin, verify_pin
 
 router = APIRouter(prefix="/auth", tags=["auth"])
@@ -16,12 +17,14 @@ router = APIRouter(prefix="/auth", tags=["auth"])
 
 @router.post("/request-pin", status_code=status.HTTP_204_NO_CONTENT)
 def request_pin(payload: RequestPinIn, db: Session = Depends(get_db)):
-    user = db.query(User).filter(User.email == payload.email).first()
+    # Invite-only: we never create users here. A row must already exist,
+    # seeded from app/seed.py or inserted by hand.
+    user = find_user(db, payload.email)
     if not user:
-        user = User(email=payload.email)
-        db.add(user)
-        db.commit()
-        db.refresh(user)
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="This email isn't on the invite list.",
+        )
 
     if user.email.lower() == settings.admin_email.lower() and user.level != "admin":
         user.level = "admin"
@@ -41,7 +44,7 @@ def request_pin(payload: RequestPinIn, db: Session = Depends(get_db)):
 
 @router.post("/verify-pin", response_model=UserOut)
 def verify_pin_endpoint(payload: VerifyPinIn, response: Response, db: Session = Depends(get_db)):
-    user = db.query(User).filter(User.email == payload.email).first()
+    user = find_user(db, payload.email)
     if not user:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid email or PIN")
 

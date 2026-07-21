@@ -22,8 +22,17 @@ def patch_schema():
     # Base.metadata.create_all only creates missing tables, not columns on
     # tables that already exist (e.g. the persisted DB on a Railway volume).
     inspector = inspect(engine)
-    if "users" in inspector.get_table_names():
-        columns = {c["name"] for c in inspector.get_columns("users")}
-        if "level" not in columns:
-            with engine.begin() as conn:
-                conn.execute(text("ALTER TABLE users ADD COLUMN level VARCHAR NOT NULL DEFAULT 'user'"))
+    if "users" not in inspector.get_table_names():
+        return
+
+    columns = {c["name"] for c in inspector.get_columns("users")}
+    additions = []
+    if "level" not in columns:
+        additions.append("ALTER TABLE users ADD COLUMN level VARCHAR NOT NULL DEFAULT 'user'")
+    if "name" not in columns:
+        additions.append("ALTER TABLE users ADD COLUMN name VARCHAR")
+
+    if additions:
+        with engine.begin() as conn:
+            for statement in additions:
+                conn.execute(text(statement))

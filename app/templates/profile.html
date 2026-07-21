@@ -12,6 +12,12 @@
     <p class="panel__sub">Your Tossline account.</p>
 
     <dl class="datalist">
+      {% if user.name %}
+      <div>
+        <dt>Name</dt>
+        <dd>{{ user.name }}</dd>
+      </div>
+      {% endif %}
       <div>
         <dt>Email</dt>
         <dd>{{ user.email }}</dd>

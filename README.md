@@ -21,8 +21,12 @@ Visit http://127.0.0.1:8000
 
 ## Auth flow
 
-1. `POST /auth/request-pin {email}` — creates the user if needed, generates a
-   6-digit PIN (10 min expiry), sends it via the configured email backend.
+Tossline is **invite-only**. `request-pin` never creates users: an email must
+already have a row in `users` or it gets a 403 ("not on the invite list").
+
+1. `POST /auth/request-pin {email}` — looks the user up (case-insensitively),
+   generates a 6-digit PIN (10 min expiry), sends it via the configured email
+   backend.
 2. `POST /auth/verify-pin {email, pin}` — verifies the PIN, sets an httpOnly
    JWT session cookie.
 3. `GET /auth/me` — current user (requires cookie).
@@ -66,6 +70,22 @@ data/labels, Chivo for body. Fonts come from Google Fonts at runtime.
 ## Data
 
 SQLite file (`tossline.db`, gitignored) with two tables: `users`, `login_pins`.
+
+### Roster / invite list
+
+`app/seed.py` holds the roster and is re-run on every startup. It only
+**inserts missing** people — it never updates or deletes existing rows, so a
+level you change by hand survives a redeploy.
+
+To invite someone new you do **not** have to edit that file; inserting a row
+is enough:
+
+```sql
+INSERT INTO users (email, name, level) VALUES ('new@person.com', 'New Person', 'user');
+```
+
+Conversely, anyone with a row can log in — so if the deployed database still
+holds old test accounts, delete them or they remain able to sign in.
 
 ### User levels
 

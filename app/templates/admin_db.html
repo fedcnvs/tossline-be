@@ -20,12 +20,13 @@
   <div class="table-wrap rise rise-2">
     <table>
       <thead>
-        <tr><th>ID</th><th>Email</th><th>Level</th><th>Created at</th></tr>
+        <tr><th>ID</th><th>Name</th><th>Email</th><th>Level</th><th>Created at</th></tr>
       </thead>
       <tbody>
         {% for u in users %}
         <tr>
           <td class="num">{{ u.id }}</td>
+          <td>{{ u.name or '—' }}</td>
           <td>{{ u.email }}</td>
           <td>
             <span class="badge {% if u.level == 'admin' %}badge--admin{% endif %}">{{ u.level }}</span>
@@ -33,7 +34,7 @@
           <td class="num">{{ u.created_at.strftime('%Y-%m-%d %H:%M:%S') if u.created_at else '—' }}</td>
         </tr>
         {% else %}
-        <tr><td class="empty" colspan="4">No users yet.</td></tr>
+        <tr><td class="empty" colspan="5">No users yet.</td></tr>
         {% endfor %}
       </tbody>
     </table>

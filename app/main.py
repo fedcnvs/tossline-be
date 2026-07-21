@@ -5,11 +5,13 @@ from fastapi.staticfiles import StaticFiles
 
 from app.database import Base, engine, patch_schema
 from app.routers import admin, auth, pages
+from app.seed import seed_roster
 
 logging.basicConfig(level=logging.INFO)
 
 Base.metadata.create_all(bind=engine)
 patch_schema()
+seed_roster()
 
 app = FastAPI(title="Tossline BE")
 

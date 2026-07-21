@@ -14,6 +14,18 @@ function clearError() {
   errorEl.classList.add("hidden");
 }
 
+// Prefer the server's own explanation (e.g. "not on the invite list")
+// over a generic fallback.
+async function errorFrom(res, fallback) {
+  try {
+    const body = await res.json();
+    if (body && typeof body.detail === "string") return body.detail;
+  } catch (_) {
+    /* not JSON — fall through */
+  }
+  return fallback;
+}
+
 emailForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   clearError();
@@ -27,7 +39,7 @@ emailForm.addEventListener("submit", async (event) => {
   });
 
   if (!res.ok) {
-    showError("Could not send login code. Try again.");
+    showError(await errorFrom(res, "Could not send login code. Try again."));
     return;
   }
 
@@ -49,7 +61,7 @@ pinForm.addEventListener("submit", async (event) => {
   });
 
   if (!res.ok) {
-    showError("Invalid or expired code.");
+    showError(await errorFrom(res, "Invalid or expired code."));
     return;
   }
 
