@@ -1,35 +1,42 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Tossline — Profile</title>
-  <link rel="stylesheet" href="/static/css/style.css" />
-</head>
-<body class="page-body">
-  <header class="topbar">
-    <span>Tossline</span>
-    <span class="user-email">{{ user.email }}</span>
-    <button id="logout-btn">Log out</button>
-  </header>
+{% extends "base.html" %}
+{% block title %}Profile — Tossline{% endblock %}
 
-  <main class="card">
-    <h1>Profile</h1>
+{% block nav %}
+  {% with active = 'profile' %}{% include "_nav.html" %}{% endwith %}
+{% endblock %}
 
-    <dl class="profile-list">
-      <dt>Email</dt>
-      <dd>{{ user.email }}</dd>
+{% block content %}
+<main class="shell shell--narrow">
+  <section class="panel rise rise-1">
+    <h1 class="panel__title">Profile</h1>
+    <p class="panel__sub">Your Tossline account.</p>
 
-      <dt>Level</dt>
-      <dd>{{ user.level }}</dd>
-
-      <dt>Member since</dt>
-      <dd>{{ user.created_at }}</dd>
+    <dl class="datalist">
+      <div>
+        <dt>Email</dt>
+        <dd>{{ user.email }}</dd>
+      </div>
+      <div>
+        <dt>Level</dt>
+        <dd>
+          <span class="badge {% if user.level == 'admin' %}badge--admin{% endif %}">
+            {{ user.level }}
+          </span>
+        </dd>
+      </div>
+      <div>
+        <dt>Member since</dt>
+        <dd>{{ user.created_at.strftime('%Y-%m-%d') if user.created_at else '—' }}</dd>
+      </div>
     </dl>
 
-    <a class="btn btn-secondary" href="/player">Go to player</a>
-  </main>
+    <a class="btn btn--block" href="/player" style="margin-top:1.75rem">
+      <span>Go to player</span>
+    </a>
+  </section>
+</main>
+{% endblock %}
 
-  <script src="/static/js/player.js"></script>
-</body>
-</html>
+{% block scripts %}
+<script src="/static/js/player.js"></script>
+{% endblock %}

@@ -1,31 +1,45 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Tossline — Sign in</title>
-  <link rel="stylesheet" href="/static/css/style.css" />
-</head>
-<body>
-  <main class="card">
-    <h1>Tossline</h1>
+{% extends "base.html" %}
+{% block title %}Sign in — Tossline{% endblock %}
+
+{% block content %}
+<main class="shell shell--narrow shell--center">
+  <a class="wordmark wordmark--sm rise rise-1" href="/" style="display:block;margin-bottom:2rem">
+    Toss<span>line</span>
+  </a>
+
+  <section class="panel rise rise-2">
+    <h1 class="panel__title">Sign in</h1>
 
     <form id="email-form" class="form">
-      <label for="email">Email</label>
-      <input id="email" name="email" type="email" required autocomplete="email" placeholder="you@example.com" />
-      <button type="submit">Send login code</button>
+      <p class="panel__sub">No password. We send a six-digit code to your inbox.</p>
+      <label for="email">Email address</label>
+      <input id="email" name="email" type="email" required
+             autocomplete="email" placeholder="you@club.com" autofocus />
+      <button class="btn btn--primary btn--block" type="submit">
+        <span>Send login code</span>
+      </button>
     </form>
 
     <form id="pin-form" class="form hidden">
-      <p class="hint">We sent a 6-digit code to <strong id="pin-email"></strong>.</p>
+      <p class="hint">
+        Code sent to <strong id="pin-email"></strong> — it expires in 10 minutes.
+      </p>
       <label for="pin">Login code</label>
-      <input id="pin" name="pin" type="text" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" required autocomplete="one-time-code" />
-      <button type="submit">Verify</button>
+      <input id="pin" name="pin" type="text" inputmode="numeric"
+             pattern="[0-9]{6}" maxlength="6" required autocomplete="one-time-code"
+             placeholder="000000" />
+      <button class="btn btn--primary btn--block" type="submit">
+        <span>Verify &amp; enter</span>
+      </button>
     </form>
 
     <p id="error" class="error hidden"></p>
-  </main>
 
-  <script src="/static/js/login.js"></script>
-</body>
-</html>
+    <p class="form-foot"><a href="/">&larr; Back to home</a></p>
+  </section>
+</main>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/login.js"></script>
+{% endblock %}

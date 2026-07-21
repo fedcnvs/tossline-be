@@ -1,49 +1,70 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Tossline — DB</title>
-  <link rel="stylesheet" href="/static/css/style.css" />
-</head>
-<body class="page-body">
-  <main class="admin-wrap">
-    <h1>Database</h1>
+{% extends "base.html" %}
+{% block title %}Database — Tossline{% endblock %}
 
-    <h2>Users ({{ users|length }})</h2>
-    <table class="admin-table">
+{% block nav %}
+  {% with active = 'db' %}{% include "_nav.html" %}{% endwith %}
+{% endblock %}
+
+{% block content %}
+<main class="shell">
+  <div class="page-head rise rise-1">
+    <p class="eyebrow">Read-only</p>
+    <h1>Database</h1>
+  </div>
+
+  <div class="table-head rise rise-2">
+    <h2>Users</h2>
+    <span class="count">{{ users|length }} row{{ '' if users|length == 1 else 's' }}</span>
+  </div>
+
+  <div class="table-wrap rise rise-2">
+    <table>
       <thead>
         <tr><th>ID</th><th>Email</th><th>Level</th><th>Created at</th></tr>
       </thead>
       <tbody>
         {% for u in users %}
         <tr>
-          <td>{{ u.id }}</td>
+          <td class="num">{{ u.id }}</td>
           <td>{{ u.email }}</td>
-          <td>{{ u.level }}</td>
-          <td>{{ u.created_at }}</td>
+          <td>
+            <span class="badge {% if u.level == 'admin' %}badge--admin{% endif %}">{{ u.level }}</span>
+          </td>
+          <td class="num">{{ u.created_at.strftime('%Y-%m-%d %H:%M:%S') if u.created_at else '—' }}</td>
         </tr>
+        {% else %}
+        <tr><td class="empty" colspan="4">No users yet.</td></tr>
         {% endfor %}
       </tbody>
     </table>
+  </div>
 
-    <h2>Login PINs (last {{ login_pins|length }})</h2>
-    <table class="admin-table">
+  <div class="table-head rise rise-3">
+    <h2>Login PINs</h2>
+    <span class="count">Last {{ login_pins|length }}</span>
+  </div>
+
+  <div class="table-wrap rise rise-3">
+    <table>
       <thead>
-        <tr><th>ID</th><th>User ID</th><th>Consumed</th><th>Expires at</th><th>Created at</th></tr>
+        <tr><th>ID</th><th>User</th><th>Consumed</th><th>Expires at</th><th>Created at</th></tr>
       </thead>
       <tbody>
         {% for p in login_pins %}
         <tr>
-          <td>{{ p.id }}</td>
-          <td>{{ p.user_id }}</td>
-          <td>{{ p.consumed }}</td>
-          <td>{{ p.expires_at }}</td>
-          <td>{{ p.created_at }}</td>
+          <td class="num">{{ p.id }}</td>
+          <td class="num">{{ p.user_id }}</td>
+          <td class="{{ 'flag-yes' if p.consumed else 'flag-no' }}">
+            {{ 'yes' if p.consumed else 'no' }}
+          </td>
+          <td class="num">{{ p.expires_at.strftime('%Y-%m-%d %H:%M:%S') if p.expires_at else '—' }}</td>
+          <td class="num">{{ p.created_at.strftime('%Y-%m-%d %H:%M:%S') if p.created_at else '—' }}</td>
         </tr>
+        {% else %}
+        <tr><td class="empty" colspan="5">No login codes issued yet.</td></tr>
         {% endfor %}
       </tbody>
     </table>
-  </main>
-</body>
-</html>
+  </div>
+</main>
+{% endblock %}

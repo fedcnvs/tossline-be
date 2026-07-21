@@ -1,0 +1,16 @@
+<header class="topbar">
+  <a class="wordmark wordmark--sm" href="/">
+    Toss<span>line</span>
+  </a>
+
+  <nav class="topbar__nav">
+    <a href="/player" {% if active == 'player' %}class="is-active"{% endif %}>Player</a>
+    <a href="/profile" {% if active == 'profile' %}class="is-active"{% endif %}>Profile</a>
+    {% if user.level == 'admin' %}
+    <a href="/admin/db" {% if active == 'db' %}class="is-active"{% endif %}>Database</a>
+    {% endif %}
+  </nav>
+
+  <span class="topbar__user" title="{{ user.email }}">{{ user.email }}</span>
+  <button id="logout-btn" class="btn btn--ghost btn--sm" type="button">Log out</button>
+</header>

@@ -50,7 +50,18 @@ Controlled by `EMAIL_BACKEND` in `.env` (code default: `resend`):
 - `/health` — `{"status": "ok"}`.
 - `/admin/db` — read-only table dump of `users` and `login_pins`. Requires
   being logged in (via `/login`) with a `users.level` of `admin`; anyone else
-  gets a 403.
+  gets a 403, and the link is hidden from non-admins.
+
+### Front end
+
+Server-rendered Jinja templates, no build step. `base.html` holds the shared
+head/shell and every page extends it; `_nav.html` is the signed-in topbar
+(include it with `{% with active = '<page>' %}` to light up the current tab).
+
+All styling lives in `app/static/css/style.css` — a single sheet built on CSS
+custom properties (see `:root`). The look is "night court": deep court navy,
+Mikasa-ball yellow accent, Anton for display type, JetBrains Mono for
+data/labels, Chivo for body. Fonts come from Google Fonts at runtime.
 
 ## Data
 

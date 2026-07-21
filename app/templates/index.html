@@ -1,30 +1,70 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Tossline</title>
-  <link rel="stylesheet" href="/static/css/style.css" />
-</head>
-<body>
-  <main class="landing">
-    <h1>Tossline</h1>
-    <p class="tagline">
-      Volleyball rally analysis, without the spreadsheet. Tag it, watch it,
-      understand it — all in one place.
+{% extends "base.html" %}
+
+{% block content %}
+<main class="hero">
+  <div>
+    <p class="eyebrow rise rise-1">Volleyball rally intelligence</p>
+
+    <h1 class="hero__title rise rise-2">
+      <span class="wordmark">Toss<span>line</span></span>
+    </h1>
+
+    <p class="hero__lede rise rise-3">
+      Rally analysis without the spreadsheet. <strong>Tag it, watch it,
+      understand it</strong> — every touch, every rotation, in one place.
     </p>
 
-    <div class="landing-actions">
+    <div class="hero__cta rise rise-4">
       {% if user %}
-      <a class="btn btn-primary" href="/player">Go to player</a>
-      <a class="btn btn-secondary" href="/profile">Profile</a>
+      <a class="btn btn--primary" href="/player"><span>Go to player</span></a>
+      <a class="btn" href="/profile"><span>Profile</span></a>
       {% else %}
-      <a class="btn btn-primary" href="/login">Login</a>
+      <a class="btn btn--primary" href="/login"><span>Sign in</span></a>
       {% endif %}
-      <a class="btn btn-secondary" href="/docs">API guide</a>
-      <a class="btn btn-secondary" href="/health">Health status</a>
-      <a class="btn btn-secondary" href="/admin/db">Database</a>
     </div>
-  </main>
-</body>
-</html>
+
+    <div class="utility rise rise-5">
+      <a href="/docs">API guide</a>
+      <a href="/health">Health status</a>
+      {% if user and user.level == 'admin' %}
+      <a href="/admin/db">Database</a>
+      {% endif %}
+    </div>
+  </div>
+
+  <figure class="court rise rise-3">
+    <div class="court__stat court__stat--tl">
+      <b>18&times;9</b><span>Court / metres</span>
+    </div>
+
+    <svg viewBox="0 0 300 500" role="img" aria-label="Volleyball court with a serve trajectory">
+      <!-- floor + boundary -->
+      <rect class="court__floor" x="40" y="15" width="220" height="440" />
+
+      <!-- attack lines, 3 m either side of the net -->
+      <line class="court__line" x1="40" y1="161.7" x2="260" y2="161.7" />
+      <line class="court__line" x1="40" y1="308.3" x2="260" y2="308.3" />
+
+      <!-- the net -->
+      <line class="court__net" x1="26" y1="235" x2="274" y2="235" />
+
+      <!-- serve trajectory: the toss line -->
+      <path class="court__arc"
+            d="M 95 470 C 60 340, 70 170, 200 92" />
+
+      <circle class="court__ball" r="6">
+        <animateMotion dur="2.8s" begin="1s" repeatCount="indefinite"
+                       calcMode="spline" keyTimes="0;1" keyPoints="0;1"
+                       keySplines="0.4 0 0.6 1"
+                       path="M 95 470 C 60 340, 70 170, 200 92" />
+      </circle>
+
+      <text class="court__zone" x="150" y="252">NET</text>
+    </svg>
+
+    <div class="court__stat court__stat--br">
+      <b>6</b><span>Rotations</span>
+    </div>
+  </figure>
+</main>
+{% endblock %}
