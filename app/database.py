@@ -26,13 +26,19 @@ def patch_schema():
         return
 
     columns = {c["name"] for c in inspector.get_columns("users")}
-    additions = []
+    statements = []
     if "level" not in columns:
-        additions.append("ALTER TABLE users ADD COLUMN level VARCHAR NOT NULL DEFAULT 'user'")
+        statements.append("ALTER TABLE users ADD COLUMN level VARCHAR NOT NULL DEFAULT 'user'")
     if "name" not in columns:
-        additions.append("ALTER TABLE users ADD COLUMN name VARCHAR")
+        statements.append("ALTER TABLE users ADD COLUMN name VARCHAR")
 
-    if additions:
+    # "cloudflare" used to describe where the web player was hosted, but it
+    # looked like a database location in the admin UI. Events have always lived
+    # in this backend DB; normalize the display label to the client platform.
+    if "video_opens" in inspector.get_table_names():
+        statements.append("UPDATE video_opens SET source = 'web' WHERE source = 'cloudflare'")
+
+    if statements:
         with engine.begin() as conn:
-            for statement in additions:
+            for statement in statements:
                 conn.execute(text(statement))
