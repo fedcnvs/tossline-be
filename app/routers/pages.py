@@ -26,3 +26,10 @@ def player_page(request: Request, user: User | None = Depends(get_optional_user)
     if not user:
         return RedirectResponse(url="/login")
     return templates.TemplateResponse("player.html", {"request": request, "user": user})
+
+
+@router.get("/profile")
+def profile_page(request: Request, user: User | None = Depends(get_optional_user)):
+    if not user:
+        return RedirectResponse(url="/login")
+    return templates.TemplateResponse("profile.html", {"request": request, "user": user})

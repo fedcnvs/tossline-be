@@ -45,6 +45,7 @@ Controlled by `EMAIL_BACKEND` in `.env` (code default: `resend`):
 - `/player` — protected page with an HTML5 video player
   (`app/static/video/sample.mp4` is a generated placeholder clip — replace it
   with real content).
+- `/profile` — logged-in user's email, level, and signup date.
 - `/docs` — Swagger UI (built into FastAPI).
 - `/health` — `{"status": "ok"}`.
 - `/admin/db` — read-only table dump of `users` and `login_pins`. Requires

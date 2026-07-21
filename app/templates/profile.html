@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Tossline — Player</title>
+  <title>Tossline — Profile</title>
   <link rel="stylesheet" href="/static/css/style.css" />
 </head>
 <body class="page-body">
@@ -13,11 +13,21 @@
     <button id="logout-btn">Log out</button>
   </header>
 
-  <main class="player-wrap">
-    <video controls preload="metadata" poster="" width="100%">
-      <source src="/static/video/sample.mp4" type="video/mp4" />
-      Your browser does not support the video tag.
-    </video>
+  <main class="card">
+    <h1>Profile</h1>
+
+    <dl class="profile-list">
+      <dt>Email</dt>
+      <dd>{{ user.email }}</dd>
+
+      <dt>Level</dt>
+      <dd>{{ user.level }}</dd>
+
+      <dt>Member since</dt>
+      <dd>{{ user.created_at }}</dd>
+    </dl>
+
+    <a class="btn btn-secondary" href="/player">Go to player</a>
   </main>
 
   <script src="/static/js/player.js"></script>
