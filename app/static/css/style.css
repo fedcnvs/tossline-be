@@ -162,3 +162,41 @@ button:hover {
 .btn-secondary:hover {
   background: #475569;
 }
+
+.admin-body {
+  display: block;
+}
+
+.admin-wrap {
+  max-width: 960px;
+  margin: 40px auto;
+  padding: 0 16px;
+}
+
+.admin-wrap h1 {
+  margin: 0 0 8px;
+}
+
+.admin-wrap h2 {
+  margin: 32px 0 8px;
+  font-size: 1.1rem;
+  color: #94a3b8;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-table th,
+.admin-table td {
+  text-align: left;
+  padding: 8px 12px;
+  border-bottom: 1px solid #334155;
+  font-size: 0.9rem;
+}
+
+.admin-table th {
+  color: #94a3b8;
+  font-weight: 600;
+}

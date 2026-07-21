@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tossline — DB</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body class="admin-body">
+  <main class="admin-wrap">
+    <h1>Database</h1>
+
+    <h2>Users ({{ users|length }})</h2>
+    <table class="admin-table">
+      <thead>
+        <tr><th>ID</th><th>Email</th><th>Created at</th></tr>
+      </thead>
+      <tbody>
+        {% for u in users %}
+        <tr>
+          <td>{{ u.id }}</td>
+          <td>{{ u.email }}</td>
+          <td>{{ u.created_at }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <h2>Login PINs (last {{ login_pins|length }})</h2>
+    <table class="admin-table">
+      <thead>
+        <tr><th>ID</th><th>User ID</th><th>Consumed</th><th>Expires at</th><th>Created at</th></tr>
+      </thead>
+      <tbody>
+        {% for p in login_pins %}
+        <tr>
+          <td>{{ p.id }}</td>
+          <td>{{ p.user_id }}</td>
+          <td>{{ p.consumed }}</td>
+          <td>{{ p.expires_at }}</td>
+          <td>{{ p.created_at }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </main>
+</body>
+</html>
