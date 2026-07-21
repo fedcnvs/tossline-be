@@ -32,11 +32,12 @@ def patch_schema():
     if "name" not in columns:
         statements.append("ALTER TABLE users ADD COLUMN name VARCHAR")
 
-    # "cloudflare" used to describe where the web player was hosted, but it
-    # looked like a database location in the admin UI. Events have always lived
-    # in this backend DB; normalize the display label to the client platform.
+    # Older values described hosting rather than the playback platform.
     if "video_opens" in inspector.get_table_names():
-        statements.append("UPDATE video_opens SET source = 'web' WHERE source = 'cloudflare'")
+        statements.append(
+            "UPDATE video_opens SET source = 'browser' "
+            "WHERE source IN ('cloudflare', 'web')"
+        )
 
     if statements:
         with engine.begin() as conn:
