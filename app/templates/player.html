@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tossline — Player</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <span>Tossline</span>
+    <span class="user-email">{{ user.email }}</span>
+    <button id="logout-btn">Log out</button>
+  </header>
+
+  <main class="player-wrap">
+    <video controls preload="metadata" poster="" width="100%">
+      <source src="/static/video/sample.mp4" type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+  </main>
+
+  <script src="/static/js/player.js"></script>
+</body>
+</html>
