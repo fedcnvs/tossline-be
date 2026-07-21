@@ -24,7 +24,7 @@ def _send_via_resend(to_email: str, pin: str) -> None:
         {
             "from": settings.email_from,
             "to": [to_email],
-            "subject": "Your Tossline login code",
+            "subject": "Your login code",
             "html": f"<p>Your login code is <strong>{pin}</strong>. It expires in {settings.pin_expire_minutes} minutes.</p>",
         }
     )
