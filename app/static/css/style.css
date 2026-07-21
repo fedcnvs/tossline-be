@@ -477,30 +477,37 @@ a {
   to   { opacity: 1; }
 }
 
-/* scoreboard readouts flanking the court */
-.court__stat {
-  position: absolute;
+/* dimension lines — reads as a scale drawing, not a stat callout */
+.court__dim line {
+  stroke: var(--line-hard);
+  stroke-width: 1;
+}
+
+.court__dim-label {
   font-family: "JetBrains Mono", monospace;
-  line-height: 1.25;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  fill: var(--ink-faint);
+  text-anchor: middle;
 }
 
-.court__stat b {
-  display: block;
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--ink);
-  letter-spacing: -0.02em;
-}
-
-.court__stat span {
+.court__legend {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6em;
+  margin: 1.1rem 0 0;
+  font-family: "JetBrains Mono", monospace;
   font-size: 0.625rem;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--ink-faint);
 }
 
-.court__stat--tl { top: 4%; left: -14%; }
-.court__stat--br { bottom: 6%; right: -12%; text-align: right; }
+.court__swatch {
+  width: 26px;
+  border-top: 2px dashed var(--serve);
+}
 
 /* ---------- Panels / cards ---------- */
 
@@ -929,8 +936,8 @@ td.num {
     margin-top: 1rem;
   }
 
-  .court__stat {
-    display: none;
+  .court__legend {
+    justify-content: flex-start;
   }
 }
 

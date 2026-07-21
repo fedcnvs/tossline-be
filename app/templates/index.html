@@ -33,38 +33,50 @@
   </div>
 
   <figure class="court rise rise-3">
-    <div class="court__stat court__stat--tl">
-      <b>18&times;9</b><span>Court / metres</span>
-    </div>
-
-    <svg viewBox="0 0 300 500" role="img" aria-label="Volleyball court with a serve trajectory">
+    <svg viewBox="0 0 320 512" role="img"
+         aria-label="Scale drawing of a volleyball court, 18 by 9 metres, with a serve trajectory">
       <!-- floor + boundary -->
-      <rect class="court__floor" x="40" y="15" width="220" height="440" />
+      <rect class="court__floor" x="60" y="20" width="220" height="440" />
 
       <!-- attack lines, 3 m either side of the net -->
-      <line class="court__line" x1="40" y1="161.7" x2="260" y2="161.7" />
-      <line class="court__line" x1="40" y1="308.3" x2="260" y2="308.3" />
+      <line class="court__line" x1="60" y1="166.7" x2="280" y2="166.7" />
+      <line class="court__line" x1="60" y1="313.3" x2="280" y2="313.3" />
 
       <!-- the net -->
-      <line class="court__net" x1="26" y1="235" x2="274" y2="235" />
+      <line class="court__net" x1="46" y1="240" x2="294" y2="240" />
+
+      <!-- dimension lines, as on a scale drawing -->
+      <g class="court__dim">
+        <line x1="36" y1="20" x2="36" y2="460" />
+        <line x1="30" y1="20" x2="42" y2="20" />
+        <line x1="30" y1="460" x2="42" y2="460" />
+
+        <line x1="60" y1="484" x2="280" y2="484" />
+        <line x1="60" y1="478" x2="60" y2="490" />
+        <line x1="280" y1="478" x2="280" y2="490" />
+      </g>
+      <text class="court__dim-label" x="22" y="240"
+            transform="rotate(-90 22 240)">18 m</text>
+      <text class="court__dim-label" x="170" y="503">9 m</text>
 
       <!-- serve trajectory: the toss line -->
       <path class="court__arc"
-            d="M 95 470 C 60 340, 70 170, 200 92" />
+            d="M 115 472 C 80 340, 90 170, 218 96" />
 
       <circle class="court__ball" r="6">
         <animateMotion dur="2.8s" begin="1s" repeatCount="indefinite"
                        calcMode="spline" keyTimes="0;1" keyPoints="0;1"
                        keySplines="0.4 0 0.6 1"
-                       path="M 95 470 C 60 340, 70 170, 200 92" />
+                       path="M 115 472 C 80 340, 90 170, 218 96" />
       </circle>
 
-      <text class="court__zone" x="150" y="252">NET</text>
+      <text class="court__zone" x="170" y="258">NET</text>
     </svg>
 
-    <div class="court__stat court__stat--br">
-      <b>6</b><span>Rotations</span>
-    </div>
+    <figcaption class="court__legend">
+      <span class="court__swatch" aria-hidden="true"></span>
+      Serve trajectory
+    </figcaption>
   </figure>
 </main>
 {% endblock %}
