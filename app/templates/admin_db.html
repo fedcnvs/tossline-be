@@ -13,39 +13,11 @@
   </div>
 
   <div class="table-head rise rise-2">
-    <h2>Users</h2>
-    <span class="count">{{ users|length }} row{{ '' if users|length == 1 else 's' }}</span>
-  </div>
-
-  <div class="table-wrap rise rise-2">
-    <table>
-      <thead>
-        <tr><th>ID</th><th>Name</th><th>Email</th><th>Level</th><th>Created at</th></tr>
-      </thead>
-      <tbody>
-        {% for u in users %}
-        <tr>
-          <td class="num">{{ u.id }}</td>
-          <td>{{ u.name or '—' }}</td>
-          <td>{{ u.email }}</td>
-          <td>
-            <span class="badge {% if u.level == 'admin' %}badge--admin{% endif %}">{{ u.level }}</span>
-          </td>
-          <td class="num">{{ u.created_at.strftime('%Y-%m-%d %H:%M:%S') if u.created_at else '—' }}</td>
-        </tr>
-        {% else %}
-        <tr><td class="empty" colspan="5">No users yet.</td></tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
-
-  <div class="table-head rise rise-3">
     <h2>Video opens</h2>
     <span class="count">Last {{ video_opens|length }}</span>
   </div>
 
-  <div class="table-wrap rise rise-3">
+  <div class="table-wrap rise rise-2">
     <table>
       <thead>
         <tr><th>ID</th><th>User</th><th>Video</th><th>Source</th><th>Opened at</th></tr>
@@ -89,6 +61,34 @@
         </tr>
         {% else %}
         <tr><td class="empty" colspan="5">No login codes issued yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="table-head rise rise-4">
+    <h2>Users</h2>
+    <span class="count">{{ users|length }} row{{ '' if users|length == 1 else 's' }}</span>
+  </div>
+
+  <div class="table-wrap rise rise-4">
+    <table>
+      <thead>
+        <tr><th>ID</th><th>Name</th><th>Email</th><th>Level</th><th>Created at</th></tr>
+      </thead>
+      <tbody>
+        {% for u in users %}
+        <tr>
+          <td class="num">{{ u.id }}</td>
+          <td>{{ u.name or '—' }}</td>
+          <td>{{ u.email }}</td>
+          <td>
+            <span class="badge {% if u.level == 'admin' %}badge--admin{% endif %}">{{ u.level }}</span>
+          </td>
+          <td class="num">{{ u.created_at.strftime('%Y-%m-%d %H:%M:%S') if u.created_at else '—' }}</td>
+        </tr>
+        {% else %}
+        <tr><td class="empty" colspan="5">No users yet.</td></tr>
         {% endfor %}
       </tbody>
     </table>
