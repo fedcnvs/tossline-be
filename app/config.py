@@ -16,8 +16,7 @@ class Settings(BaseSettings):
     resend_api_key: str = ""
     email_from: str = "login@tossline.example"
 
-    admin_username: str = ""
-    admin_password: str = ""
+    admin_email: str = "federico.cian@gmail.com"
 
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
 

@@ -44,9 +44,9 @@ Controlled by `EMAIL_BACKEND` in `.env`:
   with real content).
 - `/docs` — Swagger UI (built into FastAPI).
 - `/health` — `{"status": "ok"}`.
-- `/admin/db` — read-only table dump of `users` and `login_pins`, behind HTTP
-  Basic Auth (`ADMIN_USERNAME`/`ADMIN_PASSWORD`). Returns 404 if either is
-  unset, so it's disabled by default.
+- `/admin/db` — read-only table dump of `users` and `login_pins`. Requires
+  being logged in (via `/login`, the normal email-PIN flow) as `ADMIN_EMAIL`
+  (defaults to federico.cian@gmail.com); anyone else gets a 403.
 
 ## Data
 
@@ -70,8 +70,8 @@ expects (Nixpacks auto-detects Python from `requirements.txt`).
      wired up (leave as `console` and check `railway logs` in the meantime).
    - `PIN_EXPIRE_MINUTES`, `JWT_EXPIRE_MINUTES` if you want non-default
      values.
-   - `ADMIN_USERNAME`/`ADMIN_PASSWORD` if you want `/admin/db` reachable —
-     pick a real password, not something guessable, since it's a public URL.
+   - `ADMIN_EMAIL` if it should differ from the default
+     (federico.cian@gmail.com).
 3. **SQLite caveat**: Railway's default filesystem is ephemeral — it's wiped
    on every redeploy, so the default `DATABASE_URL=sqlite:///./tossline.db`
    will lose all users/sessions on each deploy. Either:
