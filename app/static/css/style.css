@@ -794,14 +794,18 @@ a {
   max-width: 60rem;
 }
 
-/* reveal-on-scroll (progressive enhancement; visible by default) */
+/* entrance animation — CSS-only so content is NEVER left hidden by a
+   failed/late script. Ends visible via fill mode `both`; under
+   prefers-reduced-motion the global duration override lands it on the
+   final (visible) frame instantly. */
 .reveal {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+  animation: reveal-in 0.7s var(--ease) both;
 }
 
-.reveal.is-visible { opacity: 1; transform: none; }
+@keyframes reveal-in {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: none; }
+}
 
 /* ---------- Panels / cards ---------- */
 

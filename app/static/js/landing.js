@@ -51,28 +51,5 @@
   if (mid) mid.click();
 })();
 
-// ---- reveal on scroll ----
-(function () {
-  const items = document.querySelectorAll(".reveal");
-  if (!items.length) return;
-
-  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if (reduce || !("IntersectionObserver" in window)) {
-    items.forEach((el) => el.classList.add("is-visible"));
-    return;
-  }
-
-  const io = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("is-visible");
-          io.unobserve(entry.target);
-        }
-      });
-    },
-    { rootMargin: "0px 0px -10% 0px", threshold: 0.1 }
-  );
-
-  items.forEach((el) => io.observe(el));
-})();
+// Entrance reveal is CSS-only (.reveal keyframes) — no JS gate, so a slow
+// or failed script can never leave a section stuck invisible.
