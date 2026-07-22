@@ -65,14 +65,20 @@ def seed_roster() -> None:
     db = SessionLocal()
     try:
         admins = admin_emails()
-        # The admin must always be able to get in, even on a fresh database,
-        # or nobody can reach /admin/db to fix anything.
-        entries = ROSTER + [(None, email) for email in sorted(admins)]
+        # Collapse to one entry per email before touching the DB. An address
+        # can appear in both ROSTER and the admin set (e.g. conivafer23), and
+        # admin_emails() adds settings.admin_email on top — inserting the same
+        # email twice would trip the UNIQUE constraint on a fresh database.
+        desired: dict[str, str | None] = {}
+        for name, email in ROSTER:
+            desired.setdefault(email.strip().lower(), name)
+        for email in admins:  # ensures every admin can get in, even on a fresh DB
+            desired.setdefault(email, None)
+
         added = 0
         promoted = 0
 
-        for name, email in entries:
-            email = email.strip().lower()
+        for email, name in desired.items():
             existing = find_user(db, email)
 
             if existing is None:
