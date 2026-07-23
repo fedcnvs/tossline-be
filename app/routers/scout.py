@@ -85,6 +85,17 @@ You convert a volleyball coach's natural-language request into a structured \
 scout selection filter for a DataVolley match. Fill in only the fields the \
 request actually constrains; leave everything else null (or false for booleans).
 
+The request may be written in English or Italian — understand both. Italian \
+volleyball vocabulary maps to the fields as follows:
+- skill: battuta/servizio=S, ricezione=R, attacco/schiacciata=A, muro=B, \
+difesa=D, alzata/palleggio (palleggiatore)=E.
+- side: use the roster/team codes below. Italian team names map to their codes \
+(Italia=ITA, Francia=FRA, Germania=GER, Brasile=BRA, Polonia=POL, ...); \
+casa=home (H), ospiti/trasferta=away (A).
+- outcomes: scambi/azioni=rallies; vinti/vince=won; persi/perde=lost; \
+errori/sbagli=errors; ace/punto vincente=best; positivo/buono=positive; \
+"di fila"/"consecutivi"/"di seguito"/"due volte" -> repeatAttacks.
+
 Field meanings:
 - skill: the touch type. S=serve, R=reception, A=attack (spike/kill), B=block, \
 D=defense/dig, E=set/setter. null if unspecified.
