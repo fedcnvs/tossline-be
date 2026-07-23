@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
 from app.database import Base, engine, patch_schema
-from app.routers import admin, auth, events, pages
+from app.routers import admin, auth, events, pages, scout
 from app.seed import seed_roster
 
 logging.basicConfig(level=logging.INFO)
@@ -21,6 +21,7 @@ app.include_router(auth.router)
 app.include_router(events.router)
 app.include_router(pages.router)
 app.include_router(admin.router)
+app.include_router(scout.router)
 
 
 @app.get("/health")

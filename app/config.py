@@ -16,6 +16,11 @@ class Settings(BaseSettings):
     resend_api_key: str = ""
     email_from: str = "login@evervolley.com"
 
+    # Scout assistant (OpenAI). The key is read from OPEN_AI_KEY (the name it
+    # already has on Railway); the model can be overridden with OPENAI_MODEL.
+    open_ai_key: str = ""
+    openai_model: str = "gpt-4o-mini"
+
     admin_email: str = "federico.cian@gmail.com"
 
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
