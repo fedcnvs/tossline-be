@@ -37,10 +37,11 @@ ROSTER: list[tuple[str | None, str]] = [
     ("Giovanni Sanguinetti", "giovannisanguinetti34@gmail.com"),
     ("Francesco Sani", "francesco.romano.sani@gmail.com"),
     ("Riccardo Sbertoli", "rickysb6@gmail.com"),
-    (None, "ferdidegiorgi@libero.it"),
-    (None, "marcomeoni@yahoo.it"),
-    (None, "albisalmaso95@gmail.com"),
-    (None, "conivafer23@gmail.com"),
+    ("Fefe De Giorgi", "ferdidegiorgi@libero.it"),
+    ("Marco Meoni", "marcomeoni@yahoo.it"),
+    ("Alberto Salmaso", "albisalmaso95@gmail.com"),
+    ("Ivan", "conivafer23@gmail.com"),
+    ("Roberto Ciamarra" , "Roberto.ciamarra@hotmail.it"),
 ]
 
 # Anyone here gets level="admin" — i.e. read access to every user's email
@@ -48,6 +49,7 @@ ROSTER: list[tuple[str | None, str]] = [
 # included on top of this.
 ADMIN_EMAILS = {
     "conivafer23@gmail.com",
+    "federico.cian@gmail.com",
 }
 
 
