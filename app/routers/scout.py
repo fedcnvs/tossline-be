@@ -32,6 +32,7 @@ OPENAI_URL = "https://api.openai.com/v1/chat/completions"
 class PlayerCtx(BaseModel):
     number: int
     lastName: str
+    firstName: str | None = None
     side: str  # "H" | "A"
 
 
@@ -54,6 +55,7 @@ FILTER_SCHEMA = {
     "additionalProperties": False,
     "required": [
         "skill",
+        "evaluation",
         "set",
         "side",
         "playerNumber",
@@ -67,6 +69,7 @@ FILTER_SCHEMA = {
     ],
     "properties": {
         "skill": {"type": ["string", "null"], "enum": ["S", "R", "A", "B", "D", "E", None]},
+        "evaluation": {"type": ["string", "null"], "enum": ["#", "+", "!", "-", "/", "=", None]},
         "set": {"type": ["integer", "null"]},
         "side": {"type": ["string", "null"], "enum": ["H", "A", None]},
         "playerNumber": {"type": ["integer", "null"]},
@@ -99,6 +102,14 @@ errori/sbagli=errors; ace/punto vincente=best; positivo/buono=positive; \
 Field meanings:
 - skill: the touch type. S=serve, R=reception, A=attack (spike/kill), B=block, \
 D=defense/dig, E=set/setter. null if unspecified.
+- evaluation: the DataVolley outcome symbol, interpreted PER SKILL. "#"=perfect \
+/ point (ace on a serve, kill on an attack, stuff block, perfect pass or set); \
+"="=error (into the net, out, foot fault); "+"=positive/good; "!"=ok/medium; \
+"-"=poor; "/"=serve in play but tough, OR an attack that got blocked, OR an \
+over-pass. Set evaluation TOGETHER with skill for specific outcomes: ace -> \
+skill S + "#"; kill -> skill A + "#"; blocked attack -> skill A + "/"; stuff \
+block -> skill B + "#"; passing/reception error -> skill R + "="; positive \
+reception -> skill R + "+". null if no outcome is named.
 - side: "H"=home team, "A"=away/visiting team. Resolve team names or 3-letter \
 codes to the correct side using the match context. null if unspecified.
 - set: set number 1-5 if restricted to one set, else null.
@@ -109,11 +120,26 @@ touches.
 - wantsWon / wantsLost: true for rallies won / lost by the given side. Both \
 require a side; if the coach says won/lost without naming a team, still set the \
 flag and set side to null.
-- wantsErrors: true for errors/mistakes.
-- wantsBest: true for aces/kills/perfect/winning touches.
-- wantsPositive: true for positive/good touches.
+- wantsErrors / wantsBest / wantsPositive: COARSE, skill-independent flags for \
+errors ("="), winning ("#"), and positive ("#" or "+") touches. Use these ONLY \
+when no skill is named; when a skill IS named, use skill + evaluation instead.
 - repeatAttacks: N if the coach wants N attacks in a row by the same player in a \
 rally (e.g. "twice in a row" -> 2, "three straight swings" -> 3), else null.
+
+Examples (only the listed fields are set; resolve player numbers from the \
+roster; everything else stays null/false):
+- "Bottolo's serves in set 2" -> skill="S", playerNumber=<Bottolo>, set=2
+- "le battute sbagliate dell'Italia" -> skill="S", side=<Italy's side>, \
+evaluation="="
+- "Galassi's kill blocks" / "muri vincenti di Galassi" -> skill="B", \
+playerNumber=<Galassi>, evaluation="#"
+- "ricezioni positive di Balaso" -> skill="R", playerNumber=<Balaso>, \
+evaluation="+"
+- "Michieletto's blocked attacks" / "attacchi murati di Michieletto" -> \
+skill="A", playerNumber=<Michieletto>, evaluation="/"
+- "rallies won by France in set 3" -> wantsRallies=true, wantsWon=true, \
+side=<France's side>, set=3
+- "attacchi di fila di Romano" -> repeatAttacks=2, playerNumber=<Romano>
 
 If the request is ambiguous about a field, leave it null/false rather than \
 guessing.\
@@ -123,7 +149,9 @@ guessing.\
 def _build_user_content(payload: ScoutParseRequest) -> str:
     ctx = payload.context
     roster = "\n".join(
-        f"  {p.side} #{p.number} {p.lastName}" for p in ctx.players
+        f"  {p.side} #{p.number} {p.lastName}"
+        + (f" ({p.firstName})" if p.firstName else "")
+        for p in ctx.players
     ) or "  (roster unavailable)"
     sets = ", ".join(str(s) for s in ctx.sets) or "unknown"
     return (
